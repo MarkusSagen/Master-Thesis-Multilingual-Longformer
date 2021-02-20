@@ -1,0 +1,22 @@
+-e src
+cython
+sacred
+pymongo
+jupyterlab
+ipywidgets
+pandas
+seaborn
+sklearn
+tqdm==4.49.0
+tensorboard
+dnspython
+transformers==3.4.0
+pyarrow==1.0.1
+datasets
+wget
+distributed
+pillow
+h5py
+torchsummary
+graphviz
+hiddenlayer

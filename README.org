@@ -1,0 +1,237 @@
+#+TITLE: Transferability of Long-Term Context for Multilingual Transformers
+#+OPTIONS: H:4 toc:2
+#+STARTUP: inlineimages
+# +OPTIONS num:t
+
+* Table of Contents :TOC:
+- [[#description][Description]]
+- [[#motivation][Motivation]]
+- [[#frameworks-used][Frameworks Used]]
+- [[#usage-and-setup][Usage and Setup]]
+- [[#transfer-long-context-to-language-models][Transfer Long-Context to Language Models]]
+  - [[#pre-requisites][Pre-Requisites]]
+  - [[#roberta][RoBERTa]]
+  - [[#xlm-r][XLM-R]]
+- [[#todo-fine-tune-on-question-answering-tasks][~TODO~ Fine-Tune on Question Answering Tasks]]
+  - [[#todo-squad-11][~TODO~ SQuAD 1.1]]
+  - [[#todo-trivia-qa][~TODO~ Trivia QA]]
+  - [[#todo-xquad][~TODO~ XQuAD]]
+  - [[#todo-tydi-qa][~TODO~ TyDi QA]]
+- [[#todo][TODO]]
+- [[#todo-1][TODO]]
+- [[#credits][Credits]]
+- [[#meta][Meta]]
+
+* Description
+Master thesis work for investigating the transferability of long-term context on transformer models, especially in terms for multilingual models. The script provided includes the necessary steps to reproduce the result presented in the master thesis. We convert pre-trained monolingual and multilingual language models on English to Longformer models to a maximum model length of 4096.
+
+1. A Monolingual model are compare to a RoBERTa-base and Longformer-base-4096  on SQuAD 1.1 and TriviaQA.
+2. A Multilingual model are compared to an XLM-R-base model on XQuAD and TyDi QA
+
+The model are trained in docker containers for reproducability.
+* TODO Motivation
+
+* Frameworks Used
+*Built with*
++ [[https://github.com/huggingface/transformers][Transformers]]
++ [[https://github.com/huggingface/datasets][Datasets]]
+* Usage and Setup
+Makefiles are includes for quick setup, execution and tear-down
+*Setup Dockerfile and and Requirements*
+#+begin_src shell
+make build && make up
+#+end_src
+
+*Run an Example File*
+#+begin_src shell
+make repl run="scripts/test_logging.py --output_file /workspace/logs/test.log"
+#+end_src
+
+*Tear-Down*
+#+begin_src shell
+make down
+#+end_src
+
+* Transfer Long-Context to Language Models
+Converting transformer models are based on the [[https://github.com/allenai/longformer/blob/master/scripts/convert_model_to_long.ipynb][Longformer conversion script]]. The script can be run for any pre-trained RoBERTa based model and can be extended to be used with other pre-traned models.
+
+Training with these parameters on a ~TODO~ 64 GPU takes ~5 days
+** Pre-Requisites
+Download the WikiText-103 and unpack unpack to a data directory
+~TODO~
+
+** RoBERTa
+# RoBERTa Longformer training
+Docker container for training longformer from pretrained model s.a. RoBERTa model. The script `scripts/longformer.py' trains a pretrained language model to a given max sequence length. The script `scripts/run_squad.py' fine-tunes on the SQuAD 1.1 QA dataset.
+
+#+begin_src shell
+export SEED=42
+export MAX_POS=4096
+export MODEL_NAME_OR_PATH=roberta-base
+export MODEL_NAME=$MODEL_NAME_OR_PATH-$MAX_POS-seed-$SEED-fast-lm
+export MODEL_DIR=/workspace/models
+export DATA_DIR=/workspace/data/wikitext-103-raw
+export LOG_DIR=/workspace/logs
+
+make repl run="scripts/run_long_lm.py \
+    --model_name_or_path $MODEL_NAME_OR_PATH \
+    --model_name $MODEL_NAME \
+    --output_dir $MODEL_DIR/$MODEL_NAME \
+    --logging_dir $LOG_DIR/$MODEL_NAME \
+    --val_file_path $DATA_DIR/wiki.valid.raw \
+    --train_file_path $DATA_DIR/wiki.train.raw \
+    --seed $SEED \
+    --max_pos $MAX_POS \
+    --adam_epsilon 1e-8 \
+    --warmup_steps 500 \
+    --learning_rate 3e-5 \
+    --weight_decay 0.01 \
+    --max_steps 6000 \
+    --evaluate_during_training \
+    --logging_steps 50 \
+    --eval_steps 50 \
+    --save_steps 500  \
+    --max_grad_norm 1.0 \
+    --per_device_eval_batch_size 2 \
+    --per_device_train_batch_size 1 \
+    --gradient_accumulation_steps 64 \
+    --overwrite_output_dir \
+    --fp16 \
+    --do_train \
+    --do_eval
+"
+
+#+end_src
+** XLM-R
+#+begin_src shell
+export SEED=42
+export MAX_POS=4096
+export MODEL_NAME_OR_PATH=xlm-roberta-base
+export MODEL_NAME=$MODEL_NAME_OR_PATH-$MAX_POS-seed-$SEED-fast-lm
+export MODEL_DIR=/workspace/models
+export DATA_DIR=/workspace/data/wikitext-103-raw
+export LOG_DIR=/workspace/logs
+
+make repl run="scripts/run_long_lm.py \
+    --model_name_or_path $MODEL_NAME_OR_PATH \
+    --model_name $MODEL_NAME \
+    --output_dir $MODEL_DIR/$MODEL_NAME \
+    --logging_dir $LOG_DIR/$MODEL_NAME \
+    --val_file_path $DATA_DIR/wiki.valid.raw \
+    --train_file_path $DATA_DIR/wiki.train.raw \
+    --seed $SEED \
+    --max_pos $MAX_POS \
+    --adam_epsilon 1e-8 \
+    --warmup_steps 500 \
+    --learning_rate 3e-5 \
+    --weight_decay 0.01 \
+    --max_steps 6000 \
+    --evaluate_during_training \
+    --logging_steps 50 \
+    --eval_steps 50 \
+    --save_steps 500  \
+    --max_grad_norm 1.0 \
+    --per_device_eval_batch_size 2 \
+    --per_device_train_batch_size 1 \
+    --gradient_accumulation_steps 64 \
+    --overwrite_output_dir \
+    --fp16 \
+    --do_train \
+    --do_eval
+"
+
+#+end_src
+
+* ~TODO~ Fine-Tune on Question Answering Tasks
+** ~TODO~ SQuAD 1.1
+
+#+begin_src shell
+export MODEL_DIR=/workspace/models/RoBERTa_Long_seed_1337/RoBERTa_Long_seed_1337-4096-lm
+export LOG_DIR=/workspace/logs
+export SQUAD_DIR=/workspace/data/SQuAD
+export SEED=42
+
+make repl run="scripts/run_squad.py \
+    --model_type roberta \
+    --model_name_or_path $MODEL_DIR \
+    --tokenizer_name roberta-base \
+    --do_train \
+    --do_eval \
+    --fp16 \
+    --seed $SEED \
+    --do_lower_case \
+    --train_file $SQUAD_DIR/train-v1.1.json \
+    --predict_file $SQUAD_DIR/dev-v1.1.json \
+    --per_gpu_train_batch_size 12 \
+    --learning_rate 3e-5 \
+    --num_train_epochs 3.0 \
+    --max_seq_length 384 \
+    --doc_stride 128 \
+    --output_dir /workspace/models/debug_squad
+"
+
+#+end_src
+
+** ~TODO~ Trivia QA
+** ~TODO~ XQuAD
+** ~TODO~ TyDi QA
+
+
+* TODO
++ [ ] How to best run multiple jobs with different seeds?
++ [ ] Run multiple tests with different seeds
++ [ ] Download train, test and eval files with python script or =shell=
+  + [ ] Ensure that it works without setting up Sacred or giving away Peltarions Sacred pwd
++ [ ] Add instruction for setting up and running file with .env file
++ [ ] `model_max_length` instead of `max_len`
++ [ ] Add dynamic and optimized truncation and padding
++ [ ] Change LM tokenization to [[https://github.com/huggingface/transformers/blob/30e7f7e5dab20ae2ad89bdb84cbd86cd36983729/examples/language-modeling/run_mlm.py#L267][the following]] for faster training
++ [ ] Convert to fast transformer
++ [ ] Continuous F1 and EM evaluation during training
++ [ ] Re-run XLM-R training
++ [ ] TyDiQA
++ [ ] TriviaQA
++ [ ] Fix and make code more readable
++ [ ] Fix logging error with massive newlines printing
+*XQuAD*
++ [ ] XQuAD
+  + [ ] Load and investigate structure
+  + [ ] Solve tmp Problem with XLMRobertaTokenizer (known Huggingface issue, also occurs for Roberta)
+  + [ ] Compare Tokenizers for Longformer and XLMR for English train and valid data
+  + [ ] Train & Eval English
+  + [ ] Train & Eval Arabic
+  + [ ] Train & Eval Russian
+  + [ ] Train & Eval Finish
+  + [ ] Train & Eval German
+*TiDYQA*
++ [ ] Choose evaluation scheme
++ [ ] Test initial training and evaluation
++ [X] Test load from base trained model
++ [X] Upgrade to latest transformers version without breaking changes
++ [X] Make helper script to remove `optimizer.pt` and `scheduler.pt` from pretrained model dir and rename model dir if incorrect. Print back renamed path SEE [issue:](https://github.com/huggingface/transformers/issues/2981)!
++ [X] Add `#!rm /workspace/models/RoBERTa_Long_seed_1337/RoBERTa_Long_seed_1337-4096-lm/optimizer.pt`
++ [X] Add `#!rm /workspace/models/RoBERTa_Long_seed_1337/RoBERTa_Long_seed_1337-4096-lm/scheduler.pt`
++ [ ] Make training into Huggingface `[[https://huggingface.co/transformers/main_classes/trainer.html][Trainer]]` script and without `apex`, use pytorch.apex
+
+* TODO
++ Download Wikitext 103
++ BigBird and Future Works
++ Link to Report
++ Cite
++ Link to presentation
++ Describe runs made with multiple different seeds
++ Provide the notebook for plotting the results?
++ Give Guide to what to change in the .env-file
+
+
+* TODO Credits
+Longformer conversion
+Huggingface
+Datasets
+Lonformer for QA script
+Philipp at Peltarion
+Peltarion
+
+* TODO Meta
+Markus Sagen - [[mailto:markus.john.sagen@gmail.com][markus.john.sagen@gmail.com]]
+Distributed under XYZ license

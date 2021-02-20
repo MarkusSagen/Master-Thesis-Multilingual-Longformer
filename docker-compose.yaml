@@ -1,0 +1,59 @@
+version: '2.3'
+services:
+  jupyter:
+    image: e3k_${PROJECT_NAME}
+    command: jupyter lab --ip=0.0.0.0 --no-browser --NotebookApp.token='${JUPYTER_PW}'
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PKG_DIR=${PKG_DIR}
+        - PRIVATE_DEPS=${PRIVATE_DEPS}
+    shm_size: '16gb'
+    ports:
+      - ${JUPYTER_PORT}:8888
+    user: ${USER_ID}:${USER_ID}
+    runtime: ${RUNTIME}
+    network_mode: bridge
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=${GPU_IDS}
+      - SACRED_USER
+      - SACRED_PASSWORD
+      - SACRED_DATABASE
+      - SACRED_PORT
+      - SACRED_HOST
+    volumes:
+      - ${DATA_DIR}:/workspace/data
+      - ${MODEL_DIR}:/workspace/models
+      - ${PROJECT_DIR}/src:/workspace/src
+      - ${PROJECT_DIR}/notebooks:/workspace/notebooks
+      - ${PROJECT_DIR}/logs:/workspace/logs
+
+  tensorboard:
+    image: activeeon/tensorboard
+    command: tensorboard --logdir /workspace/logs
+    ports:
+      - ${TENSORBOARD_PORT}:6006
+    volumes:
+      - ${PROJECT_DIR}/logs:/workspace/logs
+      
+  repl:
+    image: e3k_${PROJECT_NAME}
+    tty: true
+    shm_size: '16gb'
+    user: ${USER_ID}:${USER_ID}
+    runtime: ${RUNTIME}
+    network_mode: bridge
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=${GPU_IDS}
+      - SACRED_USER
+      - SACRED_PASSWORD
+      - SACRED_DATABASE
+      - SACRED_PORT
+      - SACRED_HOST
+    volumes:
+      - ${DATA_DIR}:/workspace/data
+      - ${MODEL_DIR}:/workspace/models
+      - ${PROJECT_DIR}/src:/workspace/src
+      - ${PROJECT_DIR}/scripts:/workspace/scripts
+      - ${PROJECT_DIR}/logs:/workspace/logs
