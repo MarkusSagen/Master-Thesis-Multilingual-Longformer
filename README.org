@@ -1,4 +1,4 @@
-#+TITLE: Transferability of Long-Term Context for Multilingual Transformers
+#+TITLE: Large-Context Question Answering with Cross-Lingual Transfer
 #+OPTIONS: H:4 toc:2
 #+STARTUP: inlineimages
 # +OPTIONS num:t
@@ -18,8 +18,6 @@
   - [[#todo-xquad][~TODO~ XQuAD]]
   - [[#todo-tydi-qa][~TODO~ TyDi QA]]
 - [[#todo][TODO]]
-- [[#todo-1][TODO]]
-- [[#credits][Credits]]
 - [[#meta][Meta]]
 
 * Description
@@ -178,43 +176,9 @@ make repl run="scripts/run_squad.py \
 
 
 * TODO
-+ [ ] How to best run multiple jobs with different seeds?
-+ [ ] Run multiple tests with different seeds
-+ [ ] Download train, test and eval files with python script or =shell=
-  + [ ] Ensure that it works without setting up Sacred or giving away Peltarions Sacred pwd
-+ [ ] Add instruction for setting up and running file with .env file
-+ [ ] `model_max_length` instead of `max_len`
-+ [ ] Add dynamic and optimized truncation and padding
-+ [ ] Change LM tokenization to [[https://github.com/huggingface/transformers/blob/30e7f7e5dab20ae2ad89bdb84cbd86cd36983729/examples/language-modeling/run_mlm.py#L267][the following]] for faster training
-+ [ ] Convert to fast transformer
-+ [ ] Continuous F1 and EM evaluation during training
-+ [ ] Re-run XLM-R training
-+ [ ] TyDiQA
-+ [ ] TriviaQA
-+ [ ] Fix and make code more readable
-+ [ ] Fix logging error with massive newlines printing
-*XQuAD*
-+ [ ] XQuAD
-  + [ ] Load and investigate structure
-  + [ ] Solve tmp Problem with XLMRobertaTokenizer (known Huggingface issue, also occurs for Roberta)
-  + [ ] Compare Tokenizers for Longformer and XLMR for English train and valid data
-  + [ ] Train & Eval English
-  + [ ] Train & Eval Arabic
-  + [ ] Train & Eval Russian
-  + [ ] Train & Eval Finish
-  + [ ] Train & Eval German
-*TiDYQA*
-+ [ ] Choose evaluation scheme
-+ [ ] Test initial training and evaluation
-+ [X] Test load from base trained model
-+ [X] Upgrade to latest transformers version without breaking changes
-+ [X] Make helper script to remove `optimizer.pt` and `scheduler.pt` from pretrained model dir and rename model dir if incorrect. Print back renamed path SEE [issue:](https://github.com/huggingface/transformers/issues/2981)!
-+ [X] Add `#!rm /workspace/models/RoBERTa_Long_seed_1337/RoBERTa_Long_seed_1337-4096-lm/optimizer.pt`
-+ [X] Add `#!rm /workspace/models/RoBERTa_Long_seed_1337/RoBERTa_Long_seed_1337-4096-lm/scheduler.pt`
-+ [ ] Make training into Huggingface `[[https://huggingface.co/transformers/main_classes/trainer.html][Trainer]]` script and without `apex`, use pytorch.apex
-
-* TODO
 + Download Wikitext 103
++ Run the pre-training and fine-tuning and which datasets
++ Table of the evaluation matrix
 + BigBird and Future Works
 + Link to Report
 + Cite
@@ -223,14 +187,23 @@ make repl run="scripts/run_squad.py \
 + Provide the notebook for plotting the results?
 + Give Guide to what to change in the .env-file
 
+*** TODO Acknowledgment
+Many thanks to the [[https://github.com/allenai/longformer][Longformer Authors]] for providing reproducible training scripts and Huggingface for open-sourcing their models and frameworks. I would like to thank my supervisor at Peltarion Philipp Eisen for his invaluable feedback, insight and availability. Thank you Professor Joakim Nivre for insightful and thorough feedback and for taking the time out of your busy schedule. A massive thank you to all the wonderful people at Peltarion for the opportunity to work on such an interesting project.
 
-* TODO Credits
-Longformer conversion
-Huggingface
-Datasets
-Lonformer for QA script
-Philipp at Peltarion
-Peltarion
+*** TODO Citation
+If you found this repo or the thesis results useful, please cite the thesis:
+#+begin_src text
+@misc{Bergkvist1436450,
+   author = {Bergkvist, Alexander and Hedberg, Nils and Rollino, Sebastian and Sagen, Markus},
+   institution = {Uppsala University, Department of Information Technology},
+   pages = {56},
+   school = {Uppsala University, Department of Information Technology},
+   title = {Surmize: An Online NLP System for Close-Domain Question-Answering and Summarization},
+   series = {Självständigt arbete i informationsteknologi},
+   number = {2020-001},
+   year = {2020}
+}
+#+end_src
 
 * TODO Meta
 Markus Sagen - [[mailto:markus.john.sagen@gmail.com][markus.john.sagen@gmail.com]]
