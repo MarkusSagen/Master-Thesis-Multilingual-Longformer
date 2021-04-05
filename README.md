@@ -1135,10 +1135,10 @@ Each fine-tuning are grouped based on the dataset, language and context length a
 </p>
 </details>
 
-#### Acknowledgment   
+## Acknowledgment   
 Many thanks to the [Longformer Authors](https://github.com/allenai/longformer) for providing reproducible training scripts and Huggingface for open-sourcing their models and frameworks. I would like to thank my supervisor at Peltarion Philipp Eisen for his invaluable feedback, insight and availability. Thank you Professor Joakim Nivre for insightful and thorough feedback and for taking the time out of your busy schedule. A massive thank you to all the wonderful people at Peltarion for the opportunity to work on such an interesting project.   
 
-#### TODO Citation 
+## TODO Citation 
 
         @misc{Bergkvist1436450,
             author = {Bergkvist, Alexander and Hedberg, Nils and Rollino, Sebastian and Sagen, Markus},
@@ -1158,7 +1158,7 @@ For questions regarding the code or the master thesis in general add an issue in
 
 [markus.john.sagen@gmail.com](mailto:markus.john.sagen@gmail.com)
 
-#### TODO
+## TODO
 - Include images
 - Include link to report
 - Include plots
