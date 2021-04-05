@@ -53,8 +53,35 @@ class color:
     END = "\033[0m"
 
 
+def check_positive_concats(nr_concats):
+    """ Helper funtion for argparse
+    Instructs how many contexts to concatinate together.
+    Defualt for longer contexts are three.
+    More can be used, but then it requires larger GPUs.
+
+    *NOTE* this is only used when using the datasets:
+    - squad_long or
+    - xquad_long
+    """
+    try:
+        nr_concats_int = int(nr_concats)
+        if nr_concats_int <= 0:
+            raise argparse.ArgumentTypeError(f"--nr_concats expects a positive int as a value, not {nr_concats}")
+    except ValueError as e:
+        if hasattr(e, "message"):
+            print(e.message)
+        else: 
+            print(e)
+    return nr_concats_int
+
 
 parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--nr_concats",
+    default=3,
+    type=check_positive_concats,
+    help="Define how many context to concatinate together when using a `long` QA dataset.\n3 is default and yields an average context lenght of 2048 tokens",
+)
 parser.add_argument(
     "--model_name",
     default=None,
@@ -747,6 +774,10 @@ class DataTrainingArguments:
         default=512,
         metadata={"help": "Max input length for the source text"},
     )
+    nr_concats: Optional[int] = field(
+        default=3,
+        metadata={"help": "Number of contexts to concatinate"},
+    )
 
 
 
@@ -953,18 +984,9 @@ def main():
     if data_args.datasets == "tydiqa":
         raise ValueError("Not yet implemented")
 
-    # FIXME - Add as a hyperparameter
-    # change from hardcoded value
-    # SPAN = 1 # 512
-    # SPAN = 2 # 1024
-    SPAN = 3 # 2048
-    # SPAN = 4 # 2048
-    # SPAN = 5 # 4096
 
-    print(f"\nTokenizer ={color.PURPLE} {args.max_length}{color.END}")
-    print(f"Span \t={color.PURPLE} {SPAN}{color.END}\n")
-
-
+    # Define long context training and how many contexts to concatinate together
+    SPAN = args.nr_concats
     if data_args.datasets == "xquad_long":
         xquad_ar = nlp.load_dataset('xquad', 'xquad.ar', split="validation")# Arabic
         xquad_ar = concatinate_squad_data(xquad_ar, SPAN)
@@ -1011,10 +1033,7 @@ def main():
         xquad_zh = convert_dataset_to_torch_format(xquad_zh)
 
 
-    # FIXME
     if data_args.datasets == "squad_long" or data_args.datasets == "xquad_long":
-        #squad_train, squad_valid = nlp.load_dataset('squad', split=['validation'])
-        #squad_train = nlp.load_from_disk(f"{data_args.data_dir}/SQuAD_long")     # load caocatinated long train dataset locally
         squad_train = nlp.load_dataset('squad', split='train') # convert val dataset to long here
         squad_train = concatinate_squad_data(squad_train, SPAN)
 
@@ -1027,7 +1046,6 @@ def main():
 
     if data_args.datasets == "xquad" or data_args.datasets == "mlqa"  or  data_args.datasets == "squad":
         # When using XQuAD
-        # train dataset
         squad_train, squad_valid = nlp.load_dataset('squad', split=['train', 'validation'])
         
         train_dataset = convert_dataset_to_torch_format(squad_train)

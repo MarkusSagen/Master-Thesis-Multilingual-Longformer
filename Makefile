@@ -1,4 +1,3 @@
-
 include .env
 
 export USER_ID      := $(shell id -u)
@@ -37,7 +36,7 @@ logs:
 
 .PHONY: up
 up:
-	$(COMPOSE_CMD) up --detach
+	$(COMPOSE_CMD) up --detach 
 
 .PHONY: down
 down:
@@ -50,6 +49,7 @@ repl:
 .PHONY: ipython
 ipython:
 	${COMPOSE_CMD} exec repl ipython $(run)
+
 
 .PHONY: shell
 shell:
