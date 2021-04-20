@@ -1140,18 +1140,6 @@ Many thanks to the [Longformer Authors](https://github.com/allenai/longformer) f
 
 ## TODO Citation 
 
-        @misc{Bergkvist1436450,
-            author = {Bergkvist, Alexander and Hedberg, Nils and Rollino, Sebastian and Sagen, Markus},
-            institution = {Uppsala University, Department of Information Technology},
-            pages = {56},
-            school = {Uppsala University, Department of Information Technology},
-            title = {Surmize: An Online NLP System for Close-Domain Question-Answering and Summarization},
-            series = {Självständigt arbete i informationsteknologi},
-            number = {2020-001},
-            year = {2020}
-        }
-
-
 ## Contact   
 
 For questions regarding the code or the master thesis in general add an issue in the repo or contact:   
