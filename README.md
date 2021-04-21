@@ -1150,3 +1150,7 @@ For questions regarding the code or the master thesis in general add an issue in
 - Include images
 - Include link to report
 - Include plots
+- Include info of how use only the XLM-R Longformer model
+- Download link for using the XLM-L?
+- Huggingface release?
+- Create bash scripts to fine-tune models on all seeds. Just send in model name 
