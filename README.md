@@ -6,7 +6,7 @@ The script provided includes the necessary steps to reproduce the result present
 
 **We call the pre-trained models using the Longformer pre-training**:  
 1. RoBERTa-Long  
-2. XLM-Long      (weights and config are available [here](https://drive.google.com/file/d/12hrC4EsjQz6lq37xVN7Qb3oqNdEb-FEx/view?usp=sharing))
+2. XLM-Long      (weights and config are available on Huggingface [here](https://huggingface.co/markussagen/xlm-roberta-longformer-base-4096))
 
 Based on a RoBERTa and XLM-R model that has been pre-trained using the Longformer pre-training scheme.   
 
@@ -1157,7 +1157,8 @@ You can read the report [here](http://www.diva-portal.org/smash/get/diva2:154578
 
 ## Contact   
    
-> The model weights and config for the XLM-Long are made available [here](https://drive.google.com/file/d/12hrC4EsjQz6lq37xVN7Qb3oqNdEb-FEx/view?usp=sharing)) and can soon be downloaded on Huggingface.  
+> The model weights and config for the XLM-Long are available [at Huggingface](https://huggingface.co/markussagen/xlm-roberta-longformer-base-4096).   
+> Import as model_name: `markussagen/xlm-roberta-longformer-base-4096`  
 
 For questions regarding the code or the master thesis in general add an issue in the repo or contact:   
 [markus.john.sagen@gmail.com](mailto:markus.john.sagen@gmail.com)
