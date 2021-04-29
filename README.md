@@ -6,7 +6,7 @@ The script provided includes the necessary steps to reproduce the result present
 
 **We call the pre-trained models using the Longformer pre-training**:  
 1. RoBERTa-Long  
-2. XLM-Long  
+2. XLM-Long      (weights and config are available [here](https://drive.google.com/file/d/12hrC4EsjQz6lq37xVN7Qb3oqNdEb-FEx/view?usp=sharing))
 
 Based on a RoBERTa and XLM-R model that has been pre-trained using the Longformer pre-training scheme.   
 
@@ -72,7 +72,7 @@ The following applications and libraries needs to be installed in order to run t
         export SEED=42
         export MAX_POS=4096
         export MODEL_NAME_OR_PATH=xlm-roberta-base
-        export MODEL_NAME=test-the-gpu
+        export MODEL_NAME=xlm-roberta-to-longformer
         export MODEL_DIR=/workspace/models
         export DATA_DIR=/workspace/data
         export LOG_DIR=/workspace/logs
@@ -132,7 +132,9 @@ The models were trained according to this structure
 
 
 
-Each fine-tuning are grouped based on the dataset, language and context length and then evaluated for each model.  For more in-depth explanation of the pre-training script and parameters, see [Here](Pretraining_Details.md)   
+Each fine-tuning are grouped based on the dataset, language and context length and then evaluated for each model.  For more in-depth explanation of the pre-training script and parameters, see [Here](Pretraining_Details.md).    
+   
+> We have also made the model weights and config available [here](https://drive.google.com/file/d/12hrC4EsjQz6lq37xVN7Qb3oqNdEb-FEx/view?usp=sharing)) for the XLM-Long (XLM-R pre-trained into a Longformer mdoel).  
 
 <details><summary><b>Runs:</b></summary>
 <p>   
@@ -1138,7 +1140,22 @@ Each fine-tuning are grouped based on the dataset, language and context length a
 ## Acknowledgment   
 Many thanks to the [Longformer Authors](https://github.com/allenai/longformer) for providing reproducible training scripts and Huggingface for open-sourcing their models and frameworks. I would like to thank my supervisor at Peltarion Philipp Eisen for his invaluable feedback, insight and availability. Thank you Professor Joakim Nivre for insightful and thorough feedback and for taking the time out of your busy schedule. A massive thank you to all the wonderful people at Peltarion for the opportunity to work on such an interesting project.   
 
-## TODO Citation 
+## Citation   
+You can read the report [here](http://www.diva-portal.org/smash/get/diva2:1545786/FULLTEXT02.pdf)  
+```
+@mastersthesis{Sagen1545786,
+   author = {Sagen, Markus},
+   institution = {Uppsala University, Department of Information Technology},
+   pages = {45},
+   school = {Uppsala University, Department of Information Technology},
+   title = {Large-Context Question Answering with Cross-Lingual Transfer},
+   series = {UPTEC IT},
+   ISSN = {1401-5749},
+   number = {21003},
+   year = {2021}
+}
+```   
+
 
 ## Contact   
 
@@ -1147,10 +1164,7 @@ For questions regarding the code or the master thesis in general add an issue in
 [markus.john.sagen@gmail.com](mailto:markus.john.sagen@gmail.com)
 
 ## TODO
-- Include images
-- Include link to report
-- Include plots
-- Include info of how use only the XLM-R Longformer model
-- Download link for using the XLM-L?
-- Huggingface release?
+- Include plots and table for the evaluations
+- **PENDING** Huggingface release
+- Clean up the code
 - Create bash scripts to fine-tune models on all seeds. Just send in model name 
