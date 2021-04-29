@@ -133,8 +133,6 @@ The models were trained according to this structure
 
 
 Each fine-tuning are grouped based on the dataset, language and context length and then evaluated for each model.  For more in-depth explanation of the pre-training script and parameters, see [Here](Pretraining_Details.md).    
-   
-> We have also made the model weights and config available [here](https://drive.google.com/file/d/12hrC4EsjQz6lq37xVN7Qb3oqNdEb-FEx/view?usp=sharing)) for the XLM-Long (XLM-R pre-trained into a Longformer mdoel).  
 
 <details><summary><b>Runs:</b></summary>
 <p>   
@@ -1158,9 +1156,10 @@ You can read the report [here](http://www.diva-portal.org/smash/get/diva2:154578
 
 
 ## Contact   
+   
+> The model weights and config for the XLM-Long are made available [here](https://drive.google.com/file/d/12hrC4EsjQz6lq37xVN7Qb3oqNdEb-FEx/view?usp=sharing)) and can soon be downloaded on Huggingface.  
 
 For questions regarding the code or the master thesis in general add an issue in the repo or contact:   
-
 [markus.john.sagen@gmail.com](mailto:markus.john.sagen@gmail.com)
 
 ## TODO
