@@ -70,7 +70,7 @@ The following applications and libraries needs to be installed in order to run t
     Here is an example of how a training script might look like for pre-training a XLM-R model into a Longformer. The general format follows the parameters of [Huggingface Transformer's TrainingArgument](https://huggingface.co/transformers/main_classes/trainer.html#transformers.TrainingArguments). 
     
         export SEED=42
-        export MAX_POS=4096
+        export MAX_LENGTH=4096
         export MODEL_NAME_OR_PATH=xlm-roberta-base
         export MODEL_NAME=xlm-roberta-to-longformer
         export MODEL_DIR=/workspace/models
@@ -85,7 +85,7 @@ The following applications and libraries needs to be installed in order to run t
             --val_file_path $DATA_DIR/wiki.valid.raw \
             --train_file_path $DATA_DIR/wiki.train.raw \
             --seed $SEED \
-            --max_pos $MAX_POS \
+            --model_max_length $MAX_LENGTH \
             --adam_epsilon 1e-8 \
             --warmup_steps 500 \
             --learning_rate 3e-5 \
@@ -143,7 +143,7 @@ Each fine-tuning are grouped based on the dataset, language and context length a
 ##### RoBERTa   
 
     export SEED=42
-    export MAX_POS=4096
+    export MAX_LENGTH=4096
     export MODEL_DIR=/workspace/models
     export MODEL_NAME_OR_PATH=roberta-base
     export MODEL_NAME=$MODEL_NAME_OR_PATH-long
@@ -158,7 +158,7 @@ Each fine-tuning are grouped based on the dataset, language and context length a
         --val_file_path $DATA_DIR/wiki.valid.raw \
         --train_file_path $DATA_DIR/wiki.train.raw \
         --seed $SEED \
-        --max_pos $MAX_POS \
+        --model_max_length $MAX_LENGTH \
         --adam_epsilon 1e-8 \
         --warmup_steps 500 \
         --learning_rate 3e-5 \
@@ -182,7 +182,7 @@ Each fine-tuning are grouped based on the dataset, language and context length a
 ##### XLM-R   
 
     export SEED=42
-    export MAX_POS=4096
+    export MAX_LENGTH=4096
     export MODEL_DIR=/workspace/models
     export MODEL_NAME_OR_PATH=xlm-roberta-base
     export MODEL_NAME=$MODEL_NAME_OR_PATH-long
@@ -197,7 +197,7 @@ Each fine-tuning are grouped based on the dataset, language and context length a
         --val_file_path $DATA_DIR/wiki.valid.raw \
         --train_file_path $DATA_DIR/wiki.train.raw \
         --seed $SEED \
-        --max_pos $MAX_POS \
+        --model_max_length $MAX_LENGTH \
         --adam_epsilon 1e-8 \
         --warmup_steps 500 \
         --learning_rate 3e-5 \
