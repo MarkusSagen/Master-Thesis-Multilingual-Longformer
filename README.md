@@ -1165,6 +1165,4 @@ For questions regarding the code or the master thesis in general add an issue in
 
 ## TODO
 - Include plots and table for the evaluations
-- **PENDING** Huggingface release
-- Clean up the code
 - Create bash scripts to fine-tune models on all seeds. Just send in model name 
