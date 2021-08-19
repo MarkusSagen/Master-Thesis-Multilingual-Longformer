@@ -1,7 +1,7 @@
 version: '2.3'
 services:
   jupyter:
-    image: e3k_${PROJECT_NAME}
+    image: ${PROJECT_NAME}
     command: jupyter lab --ip=0.0.0.0 --no-browser --NotebookApp.token='${JUPYTER_PW}'
     build:
       context: .
@@ -17,11 +17,6 @@ services:
     network_mode: bridge
     environment:
       - NVIDIA_VISIBLE_DEVICES=${GPU_IDS}
-      - SACRED_USER
-      - SACRED_PASSWORD
-      - SACRED_DATABASE
-      - SACRED_PORT
-      - SACRED_HOST
     volumes:
       - ${DATA_DIR}:/workspace/data
       - ${MODEL_DIR}:/workspace/models
@@ -29,16 +24,8 @@ services:
       - ${PROJECT_DIR}/notebooks:/workspace/notebooks
       - ${PROJECT_DIR}/logs:/workspace/logs
 
-  tensorboard:
-    image: activeeon/tensorboard
-    command: tensorboard --logdir /workspace/logs
-    ports:
-      - ${TENSORBOARD_PORT}:6006
-    volumes:
-      - ${PROJECT_DIR}/logs:/workspace/logs
-      
   repl:
-    image: e3k_${PROJECT_NAME}
+    image: ${PROJECT_NAME}
     tty: true
     shm_size: '16gb'
     user: ${USER_ID}:${USER_ID}
@@ -46,11 +33,6 @@ services:
     network_mode: bridge
     environment:
       - NVIDIA_VISIBLE_DEVICES=${GPU_IDS}
-      - SACRED_USER
-      - SACRED_PASSWORD
-      - SACRED_DATABASE
-      - SACRED_PORT
-      - SACRED_HOST
     volumes:
       - ${DATA_DIR}:/workspace/data
       - ${MODEL_DIR}:/workspace/models
