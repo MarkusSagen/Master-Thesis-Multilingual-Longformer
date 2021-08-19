@@ -54,13 +54,14 @@ class color:
 
 def is_roberta_based_model(model_name: str) -> str:
     """Validate if the model to pre-train is of roberta architecture."""
-    if re.search("(?i)(xlm)\D(roberta)", model_name) == 'xlm-roberta':
-        model_name = 'xlm-roberta'
-    elif re.search("(?i)(roberta)", model_name) == 'roberta':
-        model_name = 'roberta'
-    else:
-        model_name = 'none'
-    return model_name
+
+    r = re.compile('(.*)roberta(.*)')
+    matches = r.findall(model_name)
+    base_name = 'none'
+    if len(matches) > 0:
+        base_name = '-'.join(model_name.split('-')[:-1])
+
+    return base_name
 
 
 ##########################################
